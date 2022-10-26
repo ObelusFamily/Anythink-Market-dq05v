@@ -18,7 +18,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
           pip install pytest-cov pytest-xdist pytest-asyncio pytest-env
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
       - name: Test with pytest
         run: |
           pytest backend/app/api/routes/comments_test.py
