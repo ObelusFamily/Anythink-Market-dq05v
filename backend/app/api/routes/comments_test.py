@@ -39,47 +39,46 @@ class FakeRepo():
         self.__comment_list.comments.append(comment)
         return comment
 
-repo = FakeRepo()
-
-@pytest.fixture
-def create_repo():
-    yield repo
-
 def test_mytest():
     assert 1 == 1
 
-async def test_empty_repo(create_repo):
+async def test_empty_repo():
+    repo = FakeRepo()
     user = User(username='user', email='user@place.com')
     comments_list = await app.api.routes.comments.list_comments_for_item(
-        'foo', user, create_repo)
+        'foo', user, repo)
     assert len(comments_list.comments) == 0
 
-async def test_one_comment(create_repo):
+async def test_one_comment():
+    repo = FakeRepo()
     user = User(username='user', email='user@place.com')
     await app.api.routes.comments.create_comment_for_item(
-        CommentInCreate(body='body'), 'foo', user, create_repo)
+        CommentInCreate(body='body'), 'foo', user, repo)
 
     comments_list = await app.api.routes.comments.list_comments_for_item(
-        'foo', user, create_repo)
+        'foo', user, repo)
     print(comments_list.comments)
     assert len(comments_list.comments) == 1
 
-async def test_one_comment2(create_repo):
+async def test_one_comment2():
+    repo = FakeRepo()
     user = User(username='user', email='user@place.com')
     await app.api.routes.comments.create_comment_for_item(
-        CommentInCreate(body='body2'), 'foo2', user, create_repo)
+        CommentInCreate(body='body2'), 'foo2', user, repo)
 
     comments_list = await app.api.routes.comments.list_comments_for_item(
-        'foo', user, create_repo)
+        'foo', user, repo)
     print(comments_list.comments)
     assert len(comments_list.comments) == 1
 
-async def test_one_comment3(create_repo):
+async def test_one_comment3():
+    repo = FakeRepo()
+    
     user = User(username='user', email='user@place.com')
     await app.api.routes.comments.create_comment_for_item(
-        CommentInCreate(body='body3'), 'foo3', user, create_repo)
+        CommentInCreate(body='body3'), 'foo3', user, repo)
 
     comments_list = await app.api.routes.comments.list_comments_for_item(
-        'foo', user, create_repo)
+        'foo', user, repo)
     print(comments_list.comments)
     assert len(comments_list.comments) == 1
